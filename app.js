@@ -11,7 +11,7 @@ app.use((req, res, next) => {
   next();
 });
 //router
-app.use('/api/v1/user', userRouter);
+app.use('/api/v1/users', userRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Không tìm thấy: ${req.originalUrl}`, 404));
