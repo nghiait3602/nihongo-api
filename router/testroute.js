@@ -1,1 +1,1 @@
-Test
+const [propertyName] = arrayToDestruct;
