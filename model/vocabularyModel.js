@@ -13,6 +13,12 @@ const tuVungSchema = new mongoose.Schema({
     },dinhNghia:{
         type: String,
         required: [true, 'Không được để trống định nghĩa']
+    },chuDe: {
+        type: String,
+        required: [true, 'Không được để trống chủ đề']
+    }, daNode:{
+        type: Boolean,
+        default: false
     },viDu:{
         type: String,
         default: null
