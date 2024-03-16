@@ -1,6 +1,8 @@
 const mongoose = require ('mongoose');
+const KhoaHoc = require('./courseModel');
+
 const baiHocSchema = new mongoose.Schema({
-    tenBaihoc: {
+    tenBaiHoc: {
         type: String,
         required: [true, 'Không được để trống tên bài học']
     },mucTieu: {
@@ -18,6 +20,10 @@ const baiHocSchema = new mongoose.Schema({
       type:Date,
       default: Date.now()
     }
+},
+{
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
 const BaiHoc = mongoose.model('baiHoc', baiHocSchema);
