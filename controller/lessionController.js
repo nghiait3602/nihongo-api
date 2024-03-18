@@ -1,5 +1,5 @@
 const baiHoc = require('./../model/lessionModel');
-const factory = require('./../controller/handlerFactory');
+const factory = require('./handlerFactory');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
 

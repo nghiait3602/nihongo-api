@@ -1,6 +1,6 @@
 const multer = require('multer');
 const sharp = require('sharp');
-const KhoaHoc = require('./../model/courseModel');
+const Kanji = require('./../model/kanjiModel');
 const factory = require('./handlerFactory');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
@@ -20,23 +20,29 @@ const upload = multer({
     fileFilter: multerFilter
 });
 
-exports.uploadHinhAnhKhoaHoc = upload.single('hinhAnh');
+exports.uploadHinhAnhKanji = upload.single('hinhAnhCachViet');
 
-exports.resizeHinhAnhKhoaHoc = catchAsync(async (req, res, next) => {
+exports.resizeHinhAnhKanji = catchAsync(async (req, res, next) => {
     if (!req.file) return next();
     
-    req.file.filename = `khoahoc-${req.params.id}-${Date.now()}.jpeg`;
-    req.body.hinhAnh =req.file.filename;
+    req.file.filename = `kanji-${req.params.id}-${Date.now()}.jpeg`;
+    req.body.hinhAnhCachViet =req.file.filename;
     await sharp(req.file.buffer)
       .resize(2000, 1500)
       .toFormat('jpeg')
       .jpeg({ quality: 90 })
-      .toFile(`public/img/course/${req.file.filename}`);
+      .toFile(`public/img/kanji/${req.file.filename}`);
     next();
 });
 
-exports.getAllKhoaHoc = factory.getAll(KhoaHoc);
-exports.getKhoaHoc = factory.getOne(KhoaHoc);
-exports.createKhoaHoc = factory.createOne(KhoaHoc);
-exports.updateKhoahoc = factory.updateOne(KhoaHoc);
-exports.deleteKhoahoc = factory.deleteOne(KhoaHoc);
+exports.setBaiHocId = (req,res,next)=>{
+    //allow nested routes
+    if(!req.body.baiHoc) req.body.baiHoc = req.params.baiHocId;
+    next();
+};
+
+exports.getAllKanji = factory.getAll(Kanji);
+exports.getKanji = factory.getOne(Kanji);
+exports.createKanji = factory.createOne(Kanji);
+exports.updateKanji = factory.updateOne(Kanji);
+exports.deleteKanji = factory.deleteOne(Kanji);
