@@ -23,5 +23,5 @@ const cauHoiSchema = new mongoose.Schema({
     }
 });
 
-const CauHoi = mongoose.model('cauHoi', cauHoiSchema);
+const CauHoi = mongoose.model('CauHoi', cauHoiSchema);
 module.exports = CauHoi;
