@@ -5,6 +5,7 @@ const globalErrorHandler = require('./controller/errorController');
 const userRouter = require('./router/userRouter');
 const khoaHocRouter = require('./router/courseRouter');
 const baiHocRouter = require('./router/lessionRouter');
+const quizzeRouter = require('./router/quizzeRouter');
 
 const app = express();
 app.use(express.json()); // trrung gian
@@ -17,6 +18,7 @@ app.use((req, res, next) => {
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/khoahoc', khoaHocRouter);
 app.use('/api/v1/baihoc', baiHocRouter);
+app.use('/api/v1/cauhoi', quizzeRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Không tìm thấy: ${req.originalUrl}`, 404));
