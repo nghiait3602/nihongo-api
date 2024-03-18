@@ -7,19 +7,26 @@ const tuVungSchema = new mongoose.Schema({
     },tu:{
         type: String,
         required: [true, 'Không được để trống Từ']
-    },phatAm:{
+    },phienAm:{
         type: String,
-        required: [true, 'Không được để trống phát âm']
+        required: [true, 'Không được để trống phiên âm']
     },dinhNghia:{
         type: String,
         required: [true, 'Không được để trống định nghĩa']
-    },chuDe: {
+    },loaiTu: {
+        type: String,
+        required: [true, 'Không được để trống loại từ']
+    }
+    ,chuDe: {
         type: String,
         required: [true, 'Không được để trống chủ đề']
     }, daNode:{
         type: Boolean,
         default: false
     },viDu:{
+        type: String,
+        default: null
+    },dichNghiaVD:{
         type: String,
         default: null
     },hinhAnh:{
@@ -32,5 +39,5 @@ const tuVungSchema = new mongoose.Schema({
     }
 });
 
-const TuVung = mongoose.model('tuVung', tuVungSchema);
+const TuVung = mongoose.model('TuVung', tuVungSchema);
 module.exports = TuVung;

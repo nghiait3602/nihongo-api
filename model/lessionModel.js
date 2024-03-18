@@ -1,5 +1,4 @@
 const mongoose = require ('mongoose');
-const KhoaHoc = require('./courseModel');
 
 const baiHocSchema = new mongoose.Schema({
     tenBaiHoc: {
@@ -20,11 +19,18 @@ const baiHocSchema = new mongoose.Schema({
       type:Date,
       default: Date.now()
     }
-},
-{
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
+},{
+    toJSON: {virtuals: true}, 
+    toObject: {virtuals: true}
 });
 
-const BaiHoc = mongoose.model('baiHoc', baiHocSchema);
+baiHocSchema.pre(/^find/, function(next){
+    this.populate({
+        path: 'khoaHoc',
+        select: 'tenKhoahoc'
+    });
+    next();
+});
+
+const BaiHoc = mongoose.model('BaiHoc', baiHocSchema);
 module.exports = BaiHoc;

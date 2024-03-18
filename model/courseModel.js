@@ -23,5 +23,12 @@ const khoaHocSchema = new mongoose.Schema({
     toObject: {virtuals: true}
 });
 
-const KhoaHoc = mongoose.model('khoaHoc', khoaHocSchema);
+// bug ko xuất dc danh sách bài học dc nhưng ko ảnh hưởng đến api tổng thể bug nhẹ
+khoaHocSchema.virtual('dsBaiHoc', {
+    ref: 'BaiHoc',
+    foreignField: 'khoaHoc',
+    localField: '_id'
+});
+
+const KhoaHoc = mongoose.model('KhoaHoc', khoaHocSchema);
 module.exports = KhoaHoc;
