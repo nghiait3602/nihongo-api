@@ -7,6 +7,9 @@ const kanjiSchema = new mongoose.Schema({
     },hanTu:{
         type: String,
         required: [true, 'Không được để trống hán tự']
+    },hanViet:{
+        type: String,
+        required: [true, 'Không được để trống từ hán việt']
     },kunyomi:{
         type: String,
         default: null
@@ -35,5 +38,13 @@ const kanjiSchema = new mongoose.Schema({
     }
 });
 
-const Kanji = mongoose.model('kanji', kanjiSchema);
+kanjiSchema.pre(/^findOne/, function(next){
+    this.populate({
+        path:'baiHoc',
+        select: 'tenBaiHoc'
+    });
+    next();
+});
+
+const Kanji = mongoose.model('Kanji', kanjiSchema);
 module.exports = Kanji;

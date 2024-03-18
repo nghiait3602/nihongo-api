@@ -1,6 +1,6 @@
 const express = require('express');
 const khoaHocController = require('./../controller/courseController');
-const baiHocRouter = require('./../router/lessionRouter');
+const baiHocRouter = require('./lessionRouter');
 const authController = require('./../controller/authController');
 
 const router = express.Router();
