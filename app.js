@@ -11,6 +11,7 @@ const quizzeRouter = require('./router/quizzeRouter');
 const kanjiRouter = require('./router/kanjiRouter');
 const tuVungRouter = require('./router/vocabularyRouter');
 
+const chudeRouter = require('./router/suggestRouter');
 
 const app = express();
 app.use(express.json()); // trrung gian
@@ -29,6 +30,7 @@ app.use('/api/v1/cauhoi', quizzeRouter);
 app.use('/api/v1/kanji', kanjiRouter);
 app.use('/api/v1/tuvung', tuVungRouter);
 
+app.use('/api/v1/tech', chudeRouter);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Không tìm thấy: ${req.originalUrl}`, 404));
