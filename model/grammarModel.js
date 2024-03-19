@@ -23,5 +23,5 @@ const nguPhapSchema = new mongoose.Schema({
     }
 });
 
-const NguPhap = mongoose.model('nguPhap', nguPhapSchema);
+const NguPhap = mongoose.model('NguPhap', nguPhapSchema);
 module.exports = NguPhap;
