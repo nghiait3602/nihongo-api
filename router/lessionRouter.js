@@ -3,12 +3,17 @@ const baiHocController = require('./../controller/lessionController');
 const authController = require('./../controller/authController');
 const kanjiRouter = require('./kanjiRouter');
 const tuVungRouter = require('./vocabularyRouter');
+const baiTapDocRouter = require('./readingRouter');
+const tienTrinhBaiHocRouter = require('./learningProgressRouter');
 const router = express.Router({mergeParams : true});
 
 router.use(authController.protect);
 
 router.use('/:baiHocId/kanji', kanjiRouter);
 router.use('/:baiHocId/tuvung', tuVungRouter);
+router.use('/:baiHocId/baitapdoc', baiTapDocRouter);
+router.use('/:baiHocId/tientrinhbaihoc', tienTrinhBaiHocRouter);
+
 
 router.route('/').get(baiHocController.getAllBaiHoc).post(authController.restrictTo('admin'),baiHocController.setKhoaHocId, baiHocController.createBaiHoc);
 

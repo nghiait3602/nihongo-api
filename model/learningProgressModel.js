@@ -21,5 +21,18 @@ const tienTrinhBaiHocSchema = new mongoose.Schema({
       default: Date.now()
     }
 });
-const TienTrinhBaiHoc = mongoose.model('tienTrinhBaiHoc',tienTrinhBaiHocSchema);
+
+tienTrinhBaiHocSchema.index({ baiHoc: 1, user: 1 }, { unique: true });
+
+tienTrinhBaiHocSchema.pre(/^findOne/, function(next){
+    this.populate({
+       path: 'user',
+       select: 'name'
+    }).populate({
+        path:'baiHoc',
+        select: 'tenBaiHoc'
+    });
+    next();
+});
+const TienTrinhBaiHoc = mongoose.model('TienTrinhBaiHoc',tienTrinhBaiHocSchema);
 module.exports = TienTrinhBaiHoc;
