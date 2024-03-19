@@ -10,6 +10,8 @@ const quizzeRouter = require('./router/quizzeRouter');
 
 const kanjiRouter = require('./router/kanjiRouter');
 const tuVungRouter = require('./router/vocabularyRouter');
+const baiTapDocRouter = require('./router/readingRouter');
+const tienTrinhBaiHocRouter = require('./router/learningProgressRouter');
 
 const chudeRouter = require('./router/suggestRouter');
 
@@ -29,6 +31,8 @@ app.use('/api/v1/cauhoi', quizzeRouter);
 
 app.use('/api/v1/kanji', kanjiRouter);
 app.use('/api/v1/tuvung', tuVungRouter);
+app.use('/api/v1/baitapdoc', baiTapDocRouter);
+app.use('/api/v1/tientrinhbaihoc', tienTrinhBaiHocRouter);
 
 app.use('/api/v1/tech', chudeRouter);
 

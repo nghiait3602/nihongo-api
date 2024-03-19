@@ -23,5 +23,13 @@ const baiTapDocSchema = new mongoose.Schema({
     }
 });
 
-const BaiTapDoc = mongoose.model('baiTapDoc', baiTapDocSchema);
+baiTapDocSchema.pre(/^findOne/, function(next){
+    this.populate({
+        path:'baiHoc',
+        select: 'tenBaiHoc'
+    });
+    next();
+});
+
+const BaiTapDoc = mongoose.model('BaiTapDoc', baiTapDocSchema);
 module.exports = BaiTapDoc;

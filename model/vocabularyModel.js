@@ -39,5 +39,13 @@ const tuVungSchema = new mongoose.Schema({
     }
 });
 
+tuVungSchema.pre(/^findOne/, function(next){
+    this.populate({
+        path:'baiHoc',
+        select: 'tenBaiHoc'
+    });
+    next();
+});
+
 const TuVung = mongoose.model('TuVung', tuVungSchema);
 module.exports = TuVung;
