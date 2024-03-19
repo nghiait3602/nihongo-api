@@ -1,7 +1,5 @@
 const baiHoc = require('./../model/lessionModel');
 const factory = require('./handlerFactory');
-const AppError = require('./../utils/appError');
-const catchAsync = require('./../utils/catchAsync');
 
 exports.setKhoaHocId = (req,res,next)=>{
     //allow nested routes

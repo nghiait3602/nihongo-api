@@ -68,6 +68,7 @@ exports.getAll = (Model) =>
     let filter = {};
     if (req.params.khoaHocId) filter = { khoaHoc: req.params.khoaHocId };
     if (req.params.baiHocId) filter = { baiHoc: req.params.baiHocId };
+    if (req.params.userId) filter = { user: req.params.userId };
 
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
