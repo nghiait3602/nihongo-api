@@ -161,7 +161,44 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+exports.verify = catchAsync(async (req, res, next) => {
+  const email = req.body.email;
+  const verificationCode = Math.round(1000 + Math.random() * 9000);
+  const message = `
+    <html>
+      <head>
+        <title>Email Content</title>
+      </head>
+      <body>
+        <h1>Welcome to NIHONGO APP</h1>
+        <p>Hello,</p>
+        <p>Thank you for trusting and using our app.</p>
+        <p>Here is your new Verification code :<strong>${verificationCode}</strong></p>
+        <p>Thank you!</p>
+      </body>
+    </html>
+  `;
 
+  if (email) {
+    try {
+      await sendEmail({
+        email: email,
+        subject: 'MÃ XÁT NHẬN!',
+        message,
+      });
+
+      res.status(200).json({
+        status: 'success',
+        verificationCode: verificationCode,
+      });
+    } catch (err) {
+      return next(
+        new AppError('Đã xảy ra lỗi khi gửi email. Thử lại sau!'),
+        500
+      );
+    }
+  }
+});
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   // 1) Get user based on POSTed email
   const user = await User.findOne({ email: req.body.email });
@@ -171,19 +208,33 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 2) Generate the random reset token
   const resetToken = user.createPasswordResetToken();
+  const randomPassword = Math.random().toString().slice(2, 10);
+  user.password = randomPassword;
   await user.save({ validateBeforeSave: false });
-
   // 3) Send it to user's email
   const resetURL = `${req.protocol}://${req.get(
     'host'
   )}/api/v1/users/resetPassword/${resetToken}`;
 
-  const message = `bạn quên mật khẩu? hãy submit đường link này để tạo mật khẩu mới ${resetURL}.\nNếu bạn không quên mật khẩu, vui lòng bỏ qua email này!`;
-
+  // const message = `bạn quên mật khẩu? hãy submit đường link này để tạo mật khẩu mới ${resetURL}.\nNếu bạn không quên mật khẩu, vui lòng bỏ qua email này!`;
+  const message = `
+    <html>
+      <head>
+        <title>Email Content</title>
+      </head>
+      <body>
+        <h1>Welcome to NIHONGO APP</h1>
+        <p>Hello,</p>
+        <p>Thank you for trusting and using our app.</p>
+        <p>Here is your new password:<strong>${randomPassword}</strong></p>
+        <p>Thank you!</p>
+      </body>
+    </html>
+  `;
   try {
     await sendEmail({
       email: user.email,
-      subject: 'token đặt lại mật khẩu của bạn (có giá trị trong 10 phút)',
+      subject: 'CẬP NHẬT MẬT KHẨU!',
       message,
     });
 
