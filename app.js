@@ -15,6 +15,7 @@ const nguPhapRouter = require('./router/grammarRouter');
 
 const baiTapDocRouter = require('./router/readingRouter');
 const tienTrinhBaiHocRouter = require('./router/learningProgressRouter');
+const capDoRouter = require('./router/levelRouter');
 
 const chudeRouter = require('./router/suggestRouter');
 
@@ -38,6 +39,8 @@ app.use('/api/v1/tuvung', tuVungRouter);
 app.use('/api/v1/nguphap', nguPhapRouter);
 app.use('/api/v1/baitapdoc', baiTapDocRouter);
 app.use('/api/v1/tientrinhbaihoc', tienTrinhBaiHocRouter);
+app.use('/api/v1/capdo', capDoRouter);
+
 
 app.use('/api/v1/tech', chudeRouter);
 
