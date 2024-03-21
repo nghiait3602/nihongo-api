@@ -41,7 +41,6 @@ app.use('/api/v1/baitapdoc', baiTapDocRouter);
 app.use('/api/v1/tientrinhbaihoc', tienTrinhBaiHocRouter);
 app.use('/api/v1/capdo', capDoRouter);
 
-
 app.use('/api/v1/tech', chudeRouter);
 
 app.all('*', (req, res, next) => {
