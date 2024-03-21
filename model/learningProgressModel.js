@@ -24,7 +24,7 @@ const tienTrinhBaiHocSchema = new mongoose.Schema({
 
 tienTrinhBaiHocSchema.index({ baiHoc: 1, user: 1 }, { unique: true });
 
-tienTrinhBaiHocSchema.pre(/^findOne/, function(next){
+tienTrinhBaiHocSchema.pre(/^find/, function(next){
     this.populate({
        path: 'user',
        select: 'name'
