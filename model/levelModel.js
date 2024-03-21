@@ -1,11 +1,13 @@
 const mongoose = require ('mongoose');
 
 capDoSchema = new mongoose.Schema({
-    khoaHoc:{
-        type: mongoose.Schema.ObjectId,
-        ref:'KhoaHoc',
-        required: [true, 'cấp độ phải thuộc về khóa học']
-    },
+    capDo:{
+      type: String,
+      require: [true, 'phải có tên cấp độ']
+    },dsKhoaHoc:[{
+      type: mongoose.Schema.ObjectId,
+      ref:'KhoaHoc'
+  }],
     createAt:{
       type:Date,
       default: Date.now()
