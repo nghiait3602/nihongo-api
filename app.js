@@ -18,7 +18,7 @@ const tienTrinhBaiHocRouter = require('./router/learningProgressRouter');
 const capDoRouter = require('./router/levelRouter');
 
 const chudeRouter = require('./router/suggestRouter');
-
+const upLoad = require('./router/updateRouter');
 const app = express();
 app.use(express.json()); // trrung gian
 app.use(cors());
@@ -42,6 +42,8 @@ app.use('/api/v1/tientrinhbaihoc', tienTrinhBaiHocRouter);
 app.use('/api/v1/capdo', capDoRouter);
 
 app.use('/api/v1/tech', chudeRouter);
+
+app.use('/api/v1/upload', upLoad);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Không tìm thấy: ${req.originalUrl}`, 404));
