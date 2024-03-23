@@ -10,6 +10,9 @@ const baiHocSchema = new mongoose.Schema({
     },noiDung: {
         type: String,
         required: [true, 'Không được để nội dung bài học']
+    },hinhAnh: {
+        type: String,
+        default: 'chưa có'
     },khoaHoc:{
         type: mongoose.Schema.ObjectId,
         ref:'KhoaHoc',
