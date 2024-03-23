@@ -13,7 +13,10 @@ const khoaHocSchema = new mongoose.Schema({
             values:[5, 4, 3, 2, 1],
             message:'Chỉ được nhập cấp độ từ 5->1'
         }
-    },hinhAnh: String,
+    },hinhAnh:{
+        type: String,
+        default: 'noimage'
+    },
     createAt:{
         type:Date,
         default: Date.now()
