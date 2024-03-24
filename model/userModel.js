@@ -37,7 +37,11 @@ const userSchema = mongoose.Schema({
   },ngaySinh: {
     type: String,
     required: [true, 'Không được để trống ngày sinh']
-  },photo: String,
+  },photo:{
+    type:String,
+    required: [true, 'Không được để trống photo']
+    //default: 'https://res.cloudinary.com/dwajmdb86/image/upload/v1711277850/nihongoapp/my0cfqxxajgndwur3evc.jpg'
+  },
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetExpires: Date,
