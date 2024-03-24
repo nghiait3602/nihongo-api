@@ -6,7 +6,18 @@ const router = express.Router({mergeParams : true});
 
 router.use(authController.protect);
 
-router.route('/').get(kanjiController.getAllKanji).post(authController.restrictTo('admin'),kanjiController.setBaiHocId, kanjiController.createKanji);
-router.route('/:id').get(kanjiController.getKanji).patch(authController.restrictTo('admin'),kanjiController.uploadHinhAnhKanji, kanjiController.resizeHinhAnhKanji, kanjiController.updateKanji).delete(authController.restrictTo('admin'), kanjiController.deleteKanji);
+router.route('/').get(kanjiController.getAllKanji)
+.post(authController.restrictTo('admin'),
+kanjiController.uploadHinhAnhKanji,
+kanjiController.uploadImage,
+kanjiController.setBaiHocId, 
+kanjiController.createKanji);
+router.route('/:id')
+.get(kanjiController.getKanji)
+.patch(authController.restrictTo('admin')
+,kanjiController.uploadHinhAnhKanji,
+kanjiController.updateImage,
+kanjiController.updateKanji)
+.delete(authController.restrictTo('admin'), kanjiController.deleteKanji);
 
 module.exports = router;

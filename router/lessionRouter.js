@@ -23,6 +23,8 @@ router
   .get(baiHocController.getAllBaiHoc)
   .post(
     authController.restrictTo('admin'),
+    baiHocController.uploadHinhAnhBaiHoc,
+    baiHocController.uploadImage,
     baiHocController.setKhoaHocId,
     baiHocController.createBaiHoc
   );
@@ -30,7 +32,9 @@ router
 router
   .route('/:id')
   .get(baiHocController.getBaiHoc)
-  .patch(authController.restrictTo('admin'), baiHocController.updateBaiHoc)
+  .patch(authController.restrictTo('admin'),
+  baiHocController.uploadHinhAnhBaiHoc,baiHocController.updateImage, 
+  baiHocController.updateBaiHoc)
   .delete(authController.restrictTo('admin'), baiHocController.deleteBaiHoc);
 
 module.exports = router;

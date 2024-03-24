@@ -15,7 +15,7 @@ const khoaHocSchema = new mongoose.Schema({
         }
     },hinhAnh:{
         type: String,
-        default: 'noimage'
+        required: [true, 'Không được để trống hình ảnh khóa học']
     },
     createAt:{
         type:Date,

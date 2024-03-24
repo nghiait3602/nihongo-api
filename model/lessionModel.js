@@ -9,10 +9,10 @@ const baiHocSchema = new mongoose.Schema({
         required: [true, 'Không được để trống mục tiêu bài học']
     },noiDung: {
         type: String,
-        required: [true, 'Không được để nội dung bài học']
+        required: [true, 'Không được để trống nội dung bài học']
     },hinhAnh: {
         type: String,
-        default: 'chưa có'
+        required: [true, 'Không được để trống hình ảnh bài học'] 
     },khoaHoc:{
         type: mongoose.Schema.ObjectId,
         ref:'KhoaHoc',

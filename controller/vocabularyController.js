@@ -1,38 +1,64 @@
 const multer = require('multer');
 const sharp = require('sharp');
+const cloudinary = require('cloudinary').v2;
+const uploadCloud = require('../config/cloudinaryStorage.config');
 const TuVung = require('./../model/vocabularyModel');
 const factory = require('./handlerFactory');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
 
-const multerStorage = multer.memoryStorage();
+// const multerStorage = multer.memoryStorage();
 
-const multerFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('image')) {
-      cb(null, true);
-    } else {
-      cb(new AppError('file này ko phải hình ảnh. Làm ơn hãy sài file hình ảnh', 400), false);
-    }
-};
+// const multerFilter = (req, file, cb) => {
+//     if (file.mimetype.startsWith('image')) {
+//       cb(null, true);
+//     } else {
+//       cb(new AppError('file này ko phải hình ảnh. Làm ơn hãy sài file hình ảnh', 400), false);
+//     }
+// };
 
-const upload = multer({
-    storage: multerStorage,
-    fileFilter: multerFilter
+// const upload = multer({
+//     storage: multerStorage,
+//     fileFilter: multerFilter
+// });
+
+exports.uploadHinhAnhTuVung = uploadCloud.single('image');
+
+// exports.resizeHinhAnhTuVung = catchAsync(async (req, res, next) => {
+//     if (!req.file) return next();
+    
+//     req.file.filename = `vocabulary-${req.params.id}-${Date.now()}.jpeg`;
+//     req.body.hinhAnh =req.file.filename;
+//     await sharp(req.file.buffer)
+//       .resize(2000, 1500)
+//       .toFormat('jpeg')
+//       .jpeg({ quality: 90 })
+//       .toFile(`public/img/vocabulary/${req.file.filename}`);
+//     next();
+// });
+
+exports.uploadImage = catchAsync(async (req, res, next) => {
+  if (!req.file) return next();
+  const data = req.file;
+  console.log(data.path);
+  req.body.hinhAnh = data.path;
+  next();
 });
 
-exports.uploadHinhAnhTuVung = upload.single('hinhAnh');
-
-exports.resizeHinhAnhTuVung = catchAsync(async (req, res, next) => {
-    if (!req.file) return next();
-    
-    req.file.filename = `vocabulary-${req.params.id}-${Date.now()}.jpeg`;
-    req.body.hinhAnh =req.file.filename;
-    await sharp(req.file.buffer)
-      .resize(2000, 1500)
-      .toFormat('jpeg')
-      .jpeg({ quality: 90 })
-      .toFile(`public/img/vocabulary/${req.file.filename}`);
-    next();
+exports.updateImage = catchAsync(async (req, res, next) => {
+  if (!req.file) return next();
+  // lấy id của hình
+  const nowDoc = await TuVung.findById(req.params.id);
+  const resultString = JSON.stringify(nowDoc.hinhAnh);
+  const publicId = resultString.split("/").slice(-2).join("/").slice(0, -5);
+  console.log(publicId);
+  // xóa hình trên cloud
+  cloudinary.uploader.destroy(publicId);
+  // update hình mới
+  const data = req.file;
+  console.log(data.path);
+  req.body.hinhAnh = data.path;
+  next();
 });
 
 exports.setBaiHocId = (req,res,next)=>{
