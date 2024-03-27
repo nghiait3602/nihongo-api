@@ -62,7 +62,7 @@ exports.updateImage = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllKhoaHoc = factory.getAll(KhoaHoc);
-exports.getKhoaHoc = factory.getOne(KhoaHoc);
+exports.getKhoaHoc = factory.getOne(KhoaHoc, {path: 'dsBaiHoc'});
 exports.createKhoaHoc = factory.createOne(KhoaHoc);
 exports.updateKhoahoc = factory.updateOne(KhoaHoc);
 exports.deleteKhoahoc = factory.deleteOne(KhoaHoc);

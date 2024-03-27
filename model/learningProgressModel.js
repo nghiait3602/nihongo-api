@@ -26,9 +26,6 @@ tienTrinhBaiHocSchema.index({ baiHoc: 1, user: 1 }, { unique: true });
 
 tienTrinhBaiHocSchema.pre(/^find/, function(next){
     this.populate({
-       path: 'user',
-       select: 'name'
-    }).populate({
         path:'baiHoc',
         select: 'tenBaiHoc'
     });
