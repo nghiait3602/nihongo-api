@@ -117,7 +117,7 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
 // đây chỉ là demo
 //chỉ dành cho admin
 exports.getAllUser = handlerFactory.getAll(User);
-exports.getUser = handlerFactory.getOne(User);
+exports.getUser = handlerFactory.getOne(User, {path: 'tienTrinhCuaToi'});
 exports.createUser = handlerFactory.createOne(User);
 exports.updateUser = handlerFactory.updateOne(User);
 exports.deleteUser = handlerFactory.deleteOne(User);

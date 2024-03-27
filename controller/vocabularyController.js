@@ -75,6 +75,14 @@ exports.deleteTuVung = factory.deleteOne(TuVung);
 
 exports.selectTuVungTheoChuDe = catchAsync( async (req,res,next)=>{
   const chuDeDaChon = req.query.chuDeDaChon;
+  if (!chuDeDaChon) {
+    next(
+      new AppError(
+        'là ơn hãy chọn 1 chủ đề',
+        400
+      )
+    );
+  }
   console.log(`chủ đề đã chọn: ${chuDeDaChon}`);
   const selectChuDe = await TuVung.find({chuDe: { $regex: chuDeDaChon, $options: 'i' }})
   res.status(200).json({
