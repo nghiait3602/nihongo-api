@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const validator = require('validator');
+const BaiHoc = require('./lessionModel');
+const TienTrinhBaiHoc = require('./learningProgressModel');
 const userSchema = mongoose.Schema({
   name: {
     type: String,
@@ -40,7 +42,6 @@ const userSchema = mongoose.Schema({
   },photo:{
     type:String,
     required: [true, 'Không được để trống photo']
-    //default: 'https://res.cloudinary.com/dwajmdb86/image/upload/v1711277850/nihongoapp/my0cfqxxajgndwur3evc.jpg'
   },
   passwordChangedAt: Date,
   passwordResetToken: String,
@@ -49,12 +50,37 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: true,
     select: false
+  },baiHocTiepTheo: {
+    type: mongoose.Schema.ObjectId,
+    ref:'BaiHoc',
+    default: null 
   },
   createAt:{
     type:Date,
     default: Date.now(),
     select: false
   }
+},{
+  toJSON: {virtuals: true}, 
+  toObject: {virtuals: true}
+});
+
+userSchema.virtual('tienTrinhCuaToi', {
+  ref: 'TienTrinhBaiHoc',
+  foreignField: 'user',
+  localField: '_id',
+  options: { 
+    sort: { createAt: -1 }, 
+    limit: 1
+  }
+});
+
+userSchema.pre(/^findOne/, function(next) {
+  this.populate({
+    path: 'baiHocTiepTheo',
+    select: '_id tenBaiHoc'
+  });
+  next();
 });
 
 userSchema.pre('save', async function(next) {
