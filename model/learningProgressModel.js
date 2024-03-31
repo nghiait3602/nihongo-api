@@ -16,9 +16,30 @@ const tienTrinhBaiHocSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    tuVungS: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'TuVung',
+        default: null
+      }
+    ],
+    nguPhapS: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'NguPhap',
+        default: null
+      }
+    ],
+    kanjiS: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Kanji',
+        default: null
+      }
+    ],
     createAt:{
       type:Date,
-      default: Date.now()
+      default: Date.now
     }
 });
 

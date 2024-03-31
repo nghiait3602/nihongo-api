@@ -78,7 +78,7 @@ exports.selectTuVungTheoChuDe = catchAsync( async (req,res,next)=>{
   if (!chuDeDaChon) {
     next(
       new AppError(
-        'là ơn hãy chọn 1 chủ đề',
+        'làm ơn hãy chọn 1 chủ đề',
         400
       )
     );
