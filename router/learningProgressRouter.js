@@ -12,6 +12,7 @@ router
   .post(
     authController.restrictTo("admin", "user"),
     tienTrinhBaiHocController.setBaiHocUserIds,
+    tienTrinhBaiHocController.addKanjiNguPhapTuVung,
     tienTrinhBaiHocController.nextLession,
     tienTrinhBaiHocController.createTienTrinhBaiHoc
   );
@@ -20,6 +21,7 @@ router
   .get(tienTrinhBaiHocController.getTienTrinhBaiHoc)
   .patch(
     authController.restrictTo("admin"),
+    tienTrinhBaiHocController.addKanjiNguPhapTuVung,
     tienTrinhBaiHocController.updateTienTrinhBaiHoc
   )
   .delete(
