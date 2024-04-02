@@ -70,8 +70,7 @@ userSchema.virtual('tienTrinhCuaToi', {
   foreignField: 'user',
   localField: '_id',
   options: { 
-    sort: { createAt: -1 }, 
-    limit: 1
+    sort: { createAt: -1 }
   }
 });
 

@@ -17,10 +17,11 @@ router
     tienTrinhBaiHocController.createTienTrinhBaiHoc
   );
 router
-  .route("/:id")
+  .route("/:id?")
   .get(tienTrinhBaiHocController.getTienTrinhBaiHoc)
   .patch(
-    authController.restrictTo("admin"),
+    authController.restrictTo("admin", "user"),
+    tienTrinhBaiHocController.findIdTienTrinhOnBaiHoc,
     tienTrinhBaiHocController.addKanjiNguPhapTuVung,
     tienTrinhBaiHocController.updateTienTrinhBaiHoc
   )
