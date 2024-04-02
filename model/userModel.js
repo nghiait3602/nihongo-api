@@ -2,8 +2,6 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 const validator = require('validator');
-const BaiHoc = require('./lessionModel');
-const TienTrinhBaiHoc = require('./learningProgressModel');
 const userSchema = mongoose.Schema({
   name: {
     type: String,
@@ -71,6 +69,7 @@ userSchema.virtual('tienTrinhCuaToi', {
   localField: '_id',
   options: { 
     sort: { createAt: -1 }
+    //,limit: 1
   }
 });
 
