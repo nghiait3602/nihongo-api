@@ -37,6 +37,15 @@ const tienTrinhBaiHocSchema = new mongoose.Schema({
         default: null
       }
     ],
+    dsCauTraLoi: [
+      {
+        iDCauHoi:{
+          type: mongoose.Schema.ObjectId,
+          ref: 'CauHoi'
+        },
+        cauTraLoi: String
+      }
+    ],
     createAt:{
       type:Date,
       default: Date.now

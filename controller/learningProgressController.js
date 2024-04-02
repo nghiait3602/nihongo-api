@@ -8,6 +8,7 @@ const KhoaHoc = require('./../model/courseModel');
 const factory = require('./handlerFactory');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const { find } = require('./../model/learningProgressModel');
 
 exports.setBaiHocUserIds = (req,res,next)=>{// dùng để giải quyết vấn đề set id của user và tour khi dùng hàm sài chung model của factory
     //allow nested routes
@@ -15,6 +16,16 @@ exports.setBaiHocUserIds = (req,res,next)=>{// dùng để giải quyết vấn 
     if(!req.body.user) req.body.user = req.user.id;
     next();
 };
+
+exports.findIdTienTrinhOnBaiHoc = catchAsync(async (req, res, next) => {
+    if(req.params.id) return next();
+    //console.log(`iD Bài học: ${req.params.baiHocId}; iD user: ${req.user.id}`);
+    const nowTienTrinh = await TienTrinhBaiHoc.findOne({baiHoc: req.params.baiHocId , user: req.user.id});
+    if (!nowTienTrinh) return next(new AppError('Tiến trình có id bài học và id user này không tồn tại',400));
+    //console.log(`Tiến trình: ${nowTienTrinh._id}`);
+    req.params.id = nowTienTrinh._id;
+    next();
+});
 
 exports.getAllTienTrinhBaiHoc = factory.getAll(TienTrinhBaiHoc);
 exports.createTienTrinhBaiHoc = factory.createOne(TienTrinhBaiHoc);
@@ -25,26 +36,65 @@ exports.deleteTienTrinhBaiHoc = factory.deleteOne(TienTrinhBaiHoc);
 exports.nextLession = catchAsync(async (req, res, next) => {
     //const me = await User.findById(req.user.id);
     //console.log(`me: ${me}`);
-    const nowLession = await BaiHoc.findById(req.params.baiHocId);
-    const baiHocNext = await BaiHoc.findOne({ _id: { $gt: req.params.baiHocId }, khoaHoc: nowLession.khoaHoc });
-    //console.log(`bài học tiếp theo: ${baiHocNext._id}`);
-    if(!baiHocNext){
-        const khoaHocNext = await KhoaHoc.findOne({ _id: { $gt: nowLession.khoaHoc }});
-        if(khoaHocNext){
-            const khoaHocOfBaiHocNext = await BaiHoc.findOne({ khoaHoc: khoaHocNext._id }).sort({ _id: 1 });
-            const updatedUser = await User.findByIdAndUpdate(req.user.id,{baiHocTiepTheo: khoaHocOfBaiHocNext._id} ,{
-                new: true,
-                runValidators: true
-            });
-        }else{
-            const updatedUser = await User.findByIdAndUpdate(req.user.id,{baiHocTiepTheo: null} ,{
-                new: true,
-                runValidators: true
-            });
+    //const dsTienTrinh = await TienTrinhBaiHoc.find({user: req.user.id});
+    //console.log(`ds tiến trình: ${dsTienTrinh}`);
+    //const dsIdBaiHocHoanThanh = dsTienTrinh.map(el=>el.baiHoc);
+    //console.log(`ds IdBaiHocHoanThanh: ${dsIdBaiHocHoanThanh}`);
+    // dsIdBaiHocHoanThanh.forEach((BaiHoc)=>{
+    //     console.log(`IdBaiHocHoanThanh: ${BaiHoc._id}`);
+    // });
+    const nowLesson = await BaiHoc.findById(req.params.baiHocId);
+    let nextLessonId = null;
+    let currentCourseId = nowLesson.khoaHoc;
+    const completedLessonIds = [];
+    const dsTienTrinh = await TienTrinhBaiHoc.find({ user: req.user.id });
+    dsTienTrinh.forEach((el) => completedLessonIds.push(el.baiHoc._id));
+    // completedLessonIds.forEach((BaiHoc)=>{
+    //     console.log(`IdBaiHocHoanThanh: ${BaiHoc}`);
+    // });
+    while (!nextLessonId){
+        const nextLessonInCurrentCourse = await BaiHoc.findOne({ _id: { $gt: req.params.baiHocId }, khoaHoc: currentCourseId });
+        if (nextLessonInCurrentCourse && !completedLessonIds.includes(nextLessonInCurrentCourse._id)) {
+            nextLessonId = nextLessonInCurrentCourse._id;
+            break;
+        }else {
+            const nextCourse = await KhoaHoc.findOne({_id: { $gt: currentCourseId },
+        });
+        if (nextCourse) {
+            // tìm bài học đầu tiên của khóa học tiếp theo
+            const firstLessonInNextCourse = await BaiHoc.findOne({
+              khoaHoc: nextCourse._id,
+            }).sort({ _id: 1 });
+            // nếu bài học đầu tiên chưa học set id
+            if (!completedLessonIds.includes(firstLessonInNextCourse._id)) {
+                nextLessonId = firstLessonInNextCourse._id;
+                currentCourseId = nextCourse._id;
+              }
+            }else {
+                break;
+            }
         }
-        return next();
     }
-    const updatedUser = await User.findByIdAndUpdate(req.user.id,{baiHocTiepTheo: baiHocNext._id} ,{
+    
+    // const baiHocNext = await BaiHoc.findOne({ _id: { $gt: req.params.baiHocId }, khoaHoc: nowLession.khoaHoc });
+    // //console.log(`bài học tiếp theo: ${baiHocNext._id}`);
+    // if(!baiHocNext){
+    //     const khoaHocNext = await KhoaHoc.findOne({ _id: { $gt: nowLession.khoaHoc }});
+    //     if(khoaHocNext){
+    //         const khoaHocOfBaiHocNext = await BaiHoc.findOne({ khoaHoc: khoaHocNext._id }).sort({ _id: 1 });
+    //         const updatedUser = await User.findByIdAndUpdate(req.user.id,{baiHocTiepTheo: khoaHocOfBaiHocNext._id} ,{
+    //             new: true,
+    //             runValidators: true
+    //         });
+    //     }else{
+    //         const updatedUser = await User.findByIdAndUpdate(req.user.id,{baiHocTiepTheo: null} ,{
+    //             new: true,
+    //             runValidators: true
+    //         });
+    //     }
+    //     return next();
+    // }
+    const updatedUser = await User.findByIdAndUpdate(req.user.id,{baiHocTiepTheo: nextLessonId} ,{
         new: true,
         runValidators: true
     });
