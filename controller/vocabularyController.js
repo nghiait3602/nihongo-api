@@ -6,6 +6,7 @@ const TuVung = require('./../model/vocabularyModel');
 const factory = require('./handlerFactory');
 const AppError = require('./../utils/appError');
 const catchAsync = require('./../utils/catchAsync');
+const User = require('./../model/userModel');
 
 // const multerStorage = multer.memoryStorage();
 
@@ -91,4 +92,20 @@ exports.selectTuVungTheoChuDe = catchAsync( async (req,res,next)=>{
       selectChuDe
     }
 });
+});
+
+exports.addDSTuVung = catchAsync( async (req,res,next)=>{
+  const tuVung = await TuVung.findById(req.params.id);
+  if(!tuVung) return next(new AppError('No document found with that ID', 404));
+  const userInfo = await User.findById(req.user.id);
+  const dsIdTuVung = userInfo.tuVungS;
+  console.log(`dsIdTuVung: ${dsIdTuVung}`);
+  console.log(`IdTuVung: ${req.params.id}`);
+  if(dsIdTuVung.some(doneTuVungId => doneTuVungId.equals(req.params.id))) return next();
+  const updatedUser = await User.findByIdAndUpdate(req.user.id,{$push: { tuVungS: req.params.id }} ,{
+    new: true,
+    runValidators: true
+});
+  console.log('đã thêm id vào danh sách');
+  next();
 });

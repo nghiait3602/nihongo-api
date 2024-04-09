@@ -77,42 +77,42 @@ exports.nextLession = catchAsync(async (req, res, next) => {
     next();
 });
 
-exports.addKanjiNguPhapTuVung = catchAsync(async (req, res, next) => {
-    let lessionId = null;
-    if(req.params.baiHocId) lessionId = req.params.baiHocId;
-    //tìm thông tin tiến trình
-    if(req.params.id) {
-        const tienTrinh = await TienTrinhBaiHoc.findById(req.params.id); 
-        if(!tienTrinh) return next(new AppError('id của tiến trình này không tồn tại',400));
-        //console.log(`tientrinh: ${tienTrinh.baiHoc._id}`);
-        lessionId = tienTrinh.baiHoc._id;
-    }
+// exports.addKanjiNguPhapTuVung = catchAsync(async (req, res, next) => {
+//     let lessionId = null;
+//     if(req.params.baiHocId) lessionId = req.params.baiHocId;
+//     //tìm thông tin tiến trình
+//     if(req.params.id) {
+//         const tienTrinh = await TienTrinhBaiHoc.findById(req.params.id); 
+//         if(!tienTrinh) return next(new AppError('id của tiến trình này không tồn tại',400));
+//         //console.log(`tientrinh: ${tienTrinh.baiHoc._id}`);
+//         lessionId = tienTrinh.baiHoc._id;
+//     }
     
-    //tìm danh sách iD từ vựng của bài học đó và cập nhập
-    const tuVung = await TuVung.find({baiHoc:lessionId});
-    if(tuVung){
-        //console.log(`TuVung: ${tuVung}`);
-        const dsTuVung = tuVung.map(el=>el._id);
-        //console.log(`dsIdTuVung: ${dsTuVung}`);
-        req.body.tuVungS = dsTuVung;
-    }
+//     //tìm danh sách iD từ vựng của bài học đó và cập nhập
+//     const tuVung = await TuVung.find({baiHoc:lessionId});
+//     if(tuVung){
+//         //console.log(`TuVung: ${tuVung}`);
+//         const dsTuVung = tuVung.map(el=>el._id);
+//         //console.log(`dsIdTuVung: ${dsTuVung}`);
+//         req.body.tuVungS = dsTuVung;
+//     }
     
-    //tìm danh sách iD ngữ pháp của bài học đó và cập nhập
-    const nguPhap = await NguPhap.find({baiHoc:lessionId});
-    if(nguPhap){
-        //console.log(`nguphap: ${nguPhap}`);
-        const dsNguPhap = nguPhap.map(el=>el._id);
-        //console.log(`dsIdnguphap: ${dsNguPhap}`);
-        req.body.nguPhapS = dsNguPhap;
-    }
+//     //tìm danh sách iD ngữ pháp của bài học đó và cập nhập
+//     const nguPhap = await NguPhap.find({baiHoc:lessionId});
+//     if(nguPhap){
+//         //console.log(`nguphap: ${nguPhap}`);
+//         const dsNguPhap = nguPhap.map(el=>el._id);
+//         //console.log(`dsIdnguphap: ${dsNguPhap}`);
+//         req.body.nguPhapS = dsNguPhap;
+//     }
     
-    //tìm danh sách iD kanji của bài học đó và cập nhập
-    const kanji = await Kanji.find({baiHoc:lessionId});
-    if(kanji){
-        //console.log(`kanji: ${kanji}`);
-        const dsKanji = kanji.map(el=>el._id);
-        //console.log(`dsIdKanji: ${dsKanji}`);
-        req.body.kanjiS = dsKanji;
-    }
-    next();
-});
+//     //tìm danh sách iD kanji của bài học đó và cập nhập
+//     const kanji = await Kanji.find({baiHoc:lessionId});
+//     if(kanji){
+//         //console.log(`kanji: ${kanji}`);
+//         const dsKanji = kanji.map(el=>el._id);
+//         //console.log(`dsIdKanji: ${dsKanji}`);
+//         req.body.kanjiS = dsKanji;
+//     }
+//     next();
+// });

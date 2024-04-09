@@ -17,8 +17,10 @@ router
 
 router
   .route("/:id")
-  .get(grammarController.getGrammar)
+  .get(grammarController.addDSNguPhap, grammarController.getGrammar)
   .patch(authController.restrictTo("admin"), grammarController.updateGrammar)
   .delete(authController.restrictTo("admin"), grammarController.deleteGrammar);
+
+router.route("/addDSNguPhap/:id").patch(grammarController.addDSNguPhap);
 
 module.exports = router;

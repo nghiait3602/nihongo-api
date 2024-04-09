@@ -6,6 +6,8 @@ const router = express.Router({mergeParams : true});
 
 router.use(authController.protect);
 
+router.route('/addDSKanji/:id').patch(kanjiController.addDSKanji);
+
 router.route('/').get(kanjiController.getAllKanji)
 .post(authController.restrictTo('admin'),
 kanjiController.uploadHinhAnhKanji,
