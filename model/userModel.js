@@ -53,6 +53,27 @@ const userSchema = mongoose.Schema({
     ref:'BaiHoc',
     default: null 
   },
+  tuVungS: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'TuVung',
+      default: null
+    }
+  ],
+  nguPhapS: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'NguPhap',
+      default: null
+    }
+  ],
+  kanjiS: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Kanji',
+      default: null
+    }
+  ],
   createAt:{
     type:Date,
     default: Date.now(),
@@ -80,6 +101,30 @@ userSchema.pre(/^findOne/, function(next) {
   });
   next();
 });
+
+// userSchema.pre(/^findOne/, function(next) {
+//   this.populate({
+//     path: 'tuVungS',
+//     select: '_id tu'
+//   });
+//   next();
+// });
+
+// userSchema.pre(/^findOne/, function(next) {
+//   this.populate({
+//     path: 'kanjiS',
+//     select: '_id hanTu'
+//   });
+//   next();
+// });
+
+// userSchema.pre(/^findOne/, function(next) {
+//   this.populate({
+//     path: 'nguPhapS',
+//     select: '_id cauTruc'
+//   });
+//   next();
+// });
 
 userSchema.pre('save', async function(next) {
   // Only run this function if password was actually modified

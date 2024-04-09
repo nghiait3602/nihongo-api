@@ -15,7 +15,7 @@ tuVungController.uploadImage,
 tuVungController.setBaiHocId,
 tuVungController.createTuVung);
 router.route('/:id')
-.get(tuVungController.getTuVung)
+.get(tuVungController.addDSTuVung, tuVungController.getTuVung)
 .patch(authController.restrictTo('admin'), 
 tuVungController.uploadHinhAnhTuVung, 
 tuVungController.updateImage, 
