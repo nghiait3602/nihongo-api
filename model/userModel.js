@@ -43,7 +43,7 @@ const userSchema = mongoose.Schema(
     },
     photo: {
       type: String,
-      // required: [true, 'Không được để trống photo'],
+      required: [true, 'Không được để trống photo'],
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
