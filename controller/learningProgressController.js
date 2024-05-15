@@ -116,3 +116,21 @@ exports.nextLession = catchAsync(async (req, res, next) => {
 //     }
 //     next();
 // });
+
+exports.addDSNguoiHoc = catchAsync(async (req, res, next) => {
+    const baiHocInfo = await BaiHoc.findById(req.params.baiHocId);
+    if (!baiHocInfo) return next(new AppError("No document found with that ID", 404));
+    const khoaHocInfo = await KhoaHoc.findById(baiHocInfo.khoaHoc);
+    const dsNguoiHoc = khoaHocInfo.dsNguoiHoc;
+    //console.log(`dsNguoiHoc: ${dsNguoiHoc}`);
+    if(dsNguoiHoc.some((userID) => userID.equals(req.user.id))) return next ();
+    const updatedDS = await KhoaHoc.findByIdAndUpdate(
+        baiHocInfo.khoaHoc,
+        { $push: { dsNguoiHoc: req.user.id } },
+        {
+          new: true,
+          runValidators: true,
+        }
+    );
+    next();
+});

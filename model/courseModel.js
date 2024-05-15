@@ -13,7 +13,15 @@ const khoaHocSchema = new mongoose.Schema({
             values:[5, 4, 3, 2, 1],
             message:'Chỉ được nhập cấp độ từ 5->1'
         }
-    },hinhAnh:{
+    },
+    dsNguoiHoc: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        default: null,
+      },
+    ],
+    hinhAnh:{
         type: String,
         required: [true, 'Không được để trống hình ảnh khóa học']
     },
@@ -31,6 +39,14 @@ khoaHocSchema.virtual('dsBaiHoc', {
     ref: 'BaiHoc',
     foreignField: 'khoaHoc',
     localField: '_id'
+});
+
+khoaHocSchema.pre(/^find/, function(next){
+    this.populate({
+        path: 'dsNguoiHoc',
+        select: 'name email photo'
+    });
+    next();
 });
 
 const KhoaHoc = mongoose.model('KhoaHoc', khoaHocSchema);
