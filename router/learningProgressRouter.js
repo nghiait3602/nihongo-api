@@ -13,6 +13,7 @@ router
     authController.restrictTo("admin", "user"),
     tienTrinhBaiHocController.setBaiHocUserIds,
     tienTrinhBaiHocController.nextLession,
+    tienTrinhBaiHocController.addDSNguoiHoc,
     tienTrinhBaiHocController.createTienTrinhBaiHoc
   );
 router
